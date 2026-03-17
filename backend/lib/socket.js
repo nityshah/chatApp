@@ -8,7 +8,7 @@ const server = http.createServer(app); //This allows both HTTP requests (handled
 
 const io = new Server(server, { // ana thi socket.io ma je Server class che eno instance banse ane uper je server banayu e ama nakhi devanu
     cors: {
-        origin: ["http://localhost:5173"]
+        origin: true 
     }
 });
 
