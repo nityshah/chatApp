@@ -1,13 +1,13 @@
 services:
   frontend:
-    image: chatapp-frontend-image:latest
+    image: nityshah/frontend
     ports:
       - "8080:80"
     depends_on:
       - backend
 
   backend:
-    image: chatapp-backend-image:latest
+    image: nityshah/backend
     ports:
      - "5001:5001"
     environment:
