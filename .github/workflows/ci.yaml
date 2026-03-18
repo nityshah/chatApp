@@ -29,6 +29,8 @@ jobs:
           context: ./frontend
           push: true
           tags: ${{ secrets.DOCKER_USERNAME  }}/frontend:latest
+          build-args: |
+            VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
   
   backend:
     name: Build image for backend and push it to docker hub
@@ -50,14 +52,45 @@ jobs:
           context: ./backend
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/backend:latest
-          build-args: |
-            MONGODB_URI=${MONGODB_URI}
-            PORT=${PORT}
-            JWT_SECRET=${JWT_SECRET}
-            NODE_ENV=${NODE_ENV}
-            CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
-            CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
-            CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
 
     
+  deploy:
+    name: Deply chat application to EC2
+    runs-on: ubuntu-latest
+    needs: [frontend,backend]
 
+    steps:
+      - name: checkout current repository in ec2 instance
+        uses: actions/checkout@v4
+
+      - name: Move compose file to ec2 instance 
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_KEY }}
+          source: "compose.yaml"
+          target: "/home/ubuntu"
+
+
+      - name: SSH into EC2 and deploy 
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+
+            cat > .env << EOF
+            MONGODB_URI=${{ secrets.MONGODB_URI }}
+            PORT=${{ secrets.PORT }}
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
+            NODE_ENV=${{ secrets.NODE_ENV }}
+            CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}
+            CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}
+            CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}
+            EOF
+
+            docker compose up -d --pull=always
+
+    
