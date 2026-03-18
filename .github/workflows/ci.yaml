@@ -31,7 +31,7 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME  }}/frontend:latest
           build-args: |
             VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}
-            BASE_URL=google.com
+            BASE_URLLL=google.com
           #BASE_URL=${{ secrets.BASE_URL }}
   
   backend:
