@@ -31,8 +31,7 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME  }}/frontend:latest
           build-args: |
             VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}
-            VITE_SOCKET_URL=google.com
-          #BASE_URL=${{ secrets.BASE_URL }}
+            VITE_SOCKET_URL=${{ secrets.BASE_URL }}
   
   backend:
     name: Build image for backend and push it to docker hub
