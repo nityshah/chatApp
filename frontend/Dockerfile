@@ -14,11 +14,12 @@ ENV VITE_BASE_URL=$VITE_BASE_URL
 ARG BASE_URLLL
 ENV BASE_URLLL=$BASE_URLLL
 
-ENV HARSH=iwashere
 RUN npm run build
 
 
 FROM nginx:alpine
+
+ENV HARSH=iwashere
 
 COPY --from=base_image /app/dist /usr/share/nginx/html/ 
 
