@@ -29,9 +29,11 @@ jobs:
           context: ./frontend
           push: true
           tags: ${{ secrets.DOCKER_USERNAME  }}/frontend:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           build-args: |
             VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}
-            VITE_SOCKET_URL=${{ secrets.BASE_URL }}
+            VITE_SOCKET_URL=${{ secrets.VITE_SOCKET_URL }}
   
   backend:
     name: Build image for backend and push it to docker hub
@@ -52,6 +54,8 @@ jobs:
         with:
           context: ./backend
           push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: ${{ secrets.DOCKER_USERNAME }}/backend:latest
 
     
