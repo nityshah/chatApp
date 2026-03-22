@@ -9,6 +9,9 @@ on:
 
   
 jobs:
+
+
+
   frontend:
     name: Build image for frontend and push it to docker hub
     runs-on: ubuntu-latest
@@ -38,9 +41,25 @@ jobs:
             VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}
             VITE_SOCKET_URL=${{ secrets.VITE_SOCKET_URL }}
   
+  test-backend:
+    name: Build and test backend with unit testing
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout to repository in this runner
+        uses: actions/checkout@v4
+
+      - name: Install dependencies and running test
+        run: |
+          cd backend
+          npm install 
+          npm test
+
+  
   backend:
     name: Build image for backend and push it to docker hub
     runs-on: ubuntu-latest
+    needs: test-backend
 
     steps:
       - name: checkout on github runner
