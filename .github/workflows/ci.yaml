@@ -9,9 +9,6 @@ on:
 
   
 jobs:
-
-
-
   frontend:
     name: Build image for frontend and push it to docker hub
     runs-on: ubuntu-latest
@@ -48,6 +45,18 @@ jobs:
     steps:
       - name: checkout to repository in this runner
         uses: actions/checkout@v4
+
+      - name: Use cache 
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm 
+          key: ${{ runner.os }}-node-${{ hashFiles('url-shortner/app/package.json') }}
+          restore-key: |
+            ${{ runner.os }}-node-
+            ${{ runner.os }}
+
+
+
 
       - name: Install dependencies and running test
         run: |
