@@ -50,9 +50,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.npm 
-          key: ${{ runner.os }}-node-${{ hashFiles('url-shortner/app/package.json') }}
+          key: ${{ runner.os }}-node-test-${{ hashFiles('url-shortner/app/package.json') }}
           restore-key: |
-            ${{ runner.os }}-node-
+            ${{ runner.os }}-node-test- 
+            ${{ runner.os }}-node 
             ${{ runner.os }}
 
 
