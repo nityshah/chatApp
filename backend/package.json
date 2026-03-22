@@ -22,11 +22,11 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.10.2",
-    "socket.io": "^4.6.2"
+    "socket.io": "^4.6.2",
+    "jest": "^30.3.0",
+    "@jest/globals": "^29.7.0"
   },
   "devDependencies": {
-    "@jest/globals": "^30.3.0",
-    "jest": "^30.3.0",
     "nodemon": "^3.1.9"
   }
 }
